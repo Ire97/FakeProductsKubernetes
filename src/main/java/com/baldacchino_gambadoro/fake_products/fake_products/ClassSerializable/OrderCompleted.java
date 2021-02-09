@@ -9,7 +9,7 @@ import java.util.List;
 //Classe utilizzata per serializzare l'invio su topic orderupdates in caso di post con successo.
 public class OrderCompleted implements Serializable {
 
-    private ObjectId orderId;
+    private String orderId;
     private List<Order> products;
     private double total;
     private String shippingAddress;
@@ -17,7 +17,7 @@ public class OrderCompleted implements Serializable {
     private String userId;
     private HashMap<String, String> extraArgs;
 
-    public OrderCompleted(ObjectId orderId, List<Order> products, double total, String shippingAddress, String billingAddress, String userId) {
+    public OrderCompleted(String orderId, List<Order> products, double total, String shippingAddress, String billingAddress, String userId) {
         this.orderId = orderId;
         this.products = products;
         this.total = total;
@@ -27,7 +27,7 @@ public class OrderCompleted implements Serializable {
         this.extraArgs = new HashMap<String, String>();
     }
 
-    public ObjectId getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 

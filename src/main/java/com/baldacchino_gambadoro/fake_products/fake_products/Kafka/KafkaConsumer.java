@@ -26,11 +26,12 @@ public class KafkaConsumer {
     @KafkaListener(topics = "${KAFKA_TOPIC_ORDERS}", groupId = "${KAFKA_GROUP_ID}")
     public void listenOrderCompleted(ConsumerRecord<String, String> record) {
 
-        if(record != null) {
+        if(record != null && record.key().equals("order_completed")) {
             OrderCompleted orderCompleted = new Gson().fromJson(record.value(), OrderCompleted.class);
-            ObjectId id = orderCompleted.getOrderId();
-            OrderValidation orderValidation = new OrderValidation(LocalDateTime.now(), 0, id);
+            String id = orderCompleted.getOrderId();
+            OrderValidation orderValidation = new OrderValidation(LocalDateTime.now(), 0, new ObjectId(id));
             kafkaTemplate.send(kafkaTopicOrders, "order_validation", new Gson().toJson(orderValidation));
+            System.out.println("Sto inviando sul topic order_validation ciò che ho ricevuto da order_completed");
         }
 
     }
