@@ -1,0 +1,35 @@
+version: '3.8'
+
+x-kafka-env: &kafka-env
+  KAFKA_BROKER_ID: 1
+  KAFKA_ADVERTISED_PORT: 9092
+  BROKER_ID_COMMAND: "hostname | cut -d'-' -f2"
+  KAFKA_ZOOKEEPER_CONNECT: "zoo:2181"
+  KAFKA_LISTENERS: "PLAINTEXT://:9092"
+  #KAFKA_CREATE_TOPICS: "logging:20:1,pushnotifications:10:1,invoicing:10:1,mailing:10:1,userupdates:10:1,orderupdates:10:1"
+
+services:
+
+  fake-products:
+    image: ire97/fake_products:v7
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      STATUS: 0 #Variabile 0 || !=0
+      KAFKA_ADDRESS: kafka:9092
+      KAFKA_GROUP_ID: fake-products-group
+      KAFKA_TOPIC_ORDERS: orders
+
+  zoo:
+    image: library/zookeeper:3.4.13
+    environment:
+      ZOO_MY_ID: 1
+    restart: always
+
+  kafka:
+    environment: *kafka-env
+    image: wurstmeister/kafka:2.11-2.0.0
+    restart: always
+    ports:
+      - 9092:9092
