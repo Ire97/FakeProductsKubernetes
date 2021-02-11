@@ -2,11 +2,11 @@
 
 Progetto aggiuntivo creato in sostituzione al microservizio assegnato a al gruppo con ID 9, i quali si sono ritirati senza preavviso in data 05/02/2021.
 
-# Author
+## Author
 
 1) Irene Baldacchino (1000012344)
 
-# Specifiche
+## Specifiche
 
 Una prima premessa riguarda la strutturazione generale del microservizio. 
 
