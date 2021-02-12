@@ -11,7 +11,7 @@ x-kafka-env: &kafka-env
 services:
 
   fake-products:
-    image: ire97/fake_products:v7
+    image: ire97/fake_products:v8
     ports:
       - 8080:8080
     restart: always

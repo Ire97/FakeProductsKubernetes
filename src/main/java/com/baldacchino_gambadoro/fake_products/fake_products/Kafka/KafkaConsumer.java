@@ -11,6 +11,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Component
@@ -29,11 +30,12 @@ public class KafkaConsumer {
     public void listenOrderCompleted(ConsumerRecord<String, String> record) {
 
         if(record != null && record.key().equals("order_completed")) {
+            System.out.println("Messaggio ricevuto sul topic orders con chiave order_completed");
             OrderCompleted orderCompleted = new Gson().fromJson(record.value(), OrderCompleted.class);
             String id = orderCompleted.getOrderId();
-            OrderValidation orderValidation = new OrderValidation(LocalDateTime.now(), status, id);
+            OrderValidation orderValidation = new OrderValidation(Instant.now().getEpochSecond(), status, id);
             kafkaTemplate.send(kafkaTopicOrders, "order_validation", new Gson().toJson(orderValidation));
-            System.out.println("Sto inviando sul topic order_validation ciò che ho ricevuto da order_completed");
+            System.out.println("Viene inviato un messaggio sui topic order con chiave order_validation");
         }
 
     }
